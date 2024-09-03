@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class InstitutoEscolaFaculdade {
     @Id
     private int id;
-    private String sigla, nome, email, URL_website;
+    private String sigla, nome, email, URLWebsite;
     @ManyToOne
     @JoinColumn(name = "FK_Centro")
     private Centro centro;

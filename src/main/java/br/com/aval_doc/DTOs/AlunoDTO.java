@@ -6,6 +6,6 @@ public record AlunoDTO(@Getter String DRE,
                        @Getter String Nome,
                        @Getter String Email_Inst,
                        @Getter String Senha,
-                       @Getter Long fk_curso) {
+                       @Getter int fk_curso) {
 
 }

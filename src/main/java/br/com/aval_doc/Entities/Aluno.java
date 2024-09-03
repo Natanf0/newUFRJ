@@ -14,19 +14,19 @@ import lombok.ToString;
 @ToString
 public class Aluno {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long id;
     @Getter
-    private String DRE,Nome, Email_Inst, Senha;
+    private String DRE, nome, emailInst, senha;
+
     @ManyToOne
     @JoinColumn(name = "fk_curso")
     private Curso curso;
 
-
     public Aluno(AlunoDTO alunoDTO, Curso curso) {
         this.DRE=alunoDTO.getDRE();
-        this.Nome= alunoDTO.getNome();
-        this.Email_Inst= alunoDTO.getEmail_Inst();
-        this.Senha= alunoDTO.getSenha();
+        this.nome = alunoDTO.getNome();
+        this.emailInst = alunoDTO.getEmail_Inst();
+        this.senha = alunoDTO.getSenha();
         this.curso=curso;
     }
 }

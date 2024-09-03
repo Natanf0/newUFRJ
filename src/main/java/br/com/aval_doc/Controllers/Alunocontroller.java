@@ -21,15 +21,31 @@ public class Alunocontroller {
     @GetMapping
     public List<Aluno> listaAlunos(){return alunoRepository.findAll();}
 
+    @GetMapping("/{id}")
+    public Aluno fetchAluno(@PathVariable int id){
+        if(alunoRepository.existsById(id)){
+            return alunoRepository.findById(id);
+        }else{
+            throw new IllegalArgumentException("Id inválido");
+        }
+
+    }
     @PostMapping()
     public Aluno insertAluno(@RequestBody AlunoDTO alunoDTO){
-        System.out.println(alunoDTO.toString());
-        System.out.println(cursoRepository.findCursoById(alunoDTO.getFk_curso()));
-        Curso curso = cursoRepository.findCursoById(alunoDTO.getFk_curso());
-        Aluno aluno = new Aluno(alunoDTO,curso);
-        System.out.println(aluno.toString());
-        System.out.println(curso.toString());
-        return alunoRepository.save(aluno);
+        return alunoRepository.save(new Aluno(alunoDTO,
+                cursoRepository.findCursoById(alunoDTO.getFk_curso())));
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteAluno(@PathVariable int id){
+        if(alunoRepository.existsById(id)){
+            alunoRepository.deleteById(id);
+        }else{
+            throw new IllegalArgumentException("Id inválido");
+        }
+
+    }
+
+
 
 }
