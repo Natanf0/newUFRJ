@@ -17,8 +17,9 @@ public class Alunocontroller {
         this.alunoService = alunoService;
     }
     @GetMapping
-    public ResponseEntity<List<AlunoDetailsDTO>> listAllAlunos(){
-        return ResponseEntity.ok(alunoService.fetchAll());}
+    public ResponseEntity<List<AlunoDetailsDTO>> listAllAlunos(@RequestParam(defaultValue ="0") int page,
+                                                               @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(alunoService.fetchAll(page, size));}
 
     @GetMapping("/{id}")
     public ResponseEntity<AlunoDetailsDTO> fetchAlunoById(@PathVariable int id){

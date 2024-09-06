@@ -5,6 +5,9 @@ import br.com.aval_doc.DTOs.AlunoInsertDTO;
 import br.com.aval_doc.Entities.Aluno;
 import br.com.aval_doc.Repositories.AlunoRepository;
 import br.com.aval_doc.Repositories.CursoRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,14 +30,16 @@ public class AlunoService {
         else{throw new IllegalArgumentException("Id inválido");}
     }
 
-    public List<AlunoDetailsDTO> fetchAll(){
-        return alunoRepository.findAll().stream()
+    public List<AlunoDetailsDTO> fetchAll(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return alunoRepository.findAll(pageable).stream()
                 .map(AlunoDetailsDTO::createDTO)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public AlunoDetailsDTO create(AlunoInsertDTO alunoInsertDTO) {
-        if(!alunoRepository.findByDRE(alunoInsertDTO.getDRE())) {
+        if(!(alunoRepository.existsAlunoByDRE(alunoInsertDTO.getDRE()))) {
             Aluno aluno = new Aluno(alunoInsertDTO, cursoRepository.findCursoById(alunoInsertDTO.getFk_curso()));
             alunoRepository.save(aluno);
             return AlunoDetailsDTO.createDTO(aluno);
@@ -42,7 +47,10 @@ public class AlunoService {
             throw new IllegalArgumentException("Já existe um aluno com este DRE");
         }
     }
+
+    @Transactional
     public void deleteById(int id){
+
         if(alunoRepository.existsById(id)){
             alunoRepository.deleteById(id);
         }else{throw new IllegalArgumentException("Id inválido");}
