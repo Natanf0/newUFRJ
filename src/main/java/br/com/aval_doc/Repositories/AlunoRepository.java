@@ -6,4 +6,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 public interface AlunoRepository extends JpaRepository<Aluno, Integer> {
     Aluno findById(int id);
+    boolean findByDRE(String DRE);
 }

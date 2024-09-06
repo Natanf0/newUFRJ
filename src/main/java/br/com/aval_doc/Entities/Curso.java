@@ -2,6 +2,7 @@ package br.com.aval_doc.Entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -11,7 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Curso {
-    @Id
+    @Id @Getter
     private int id;
     private String nome;
     @ManyToOne

@@ -1,11 +1,8 @@
 package br.com.aval_doc.Entities;
 
-import br.com.aval_doc.DTOs.AlunoDTO;
+import br.com.aval_doc.DTOs.AlunoInsertDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Table
@@ -19,14 +16,14 @@ public class Aluno {
     private String DRE, nome, emailInst, senha;
 
     @ManyToOne
-    @JoinColumn(name = "fk_curso")
+    @JoinColumn(name = "fk_curso") @Getter @Setter
     private Curso curso;
 
-    public Aluno(AlunoDTO alunoDTO, Curso curso) {
-        this.DRE=alunoDTO.getDRE();
-        this.nome = alunoDTO.getNome();
-        this.emailInst = alunoDTO.getEmail_Inst();
-        this.senha = alunoDTO.getSenha();
+    public Aluno(AlunoInsertDTO alunoInsertDTO, Curso curso) {
+        this.DRE= alunoInsertDTO.getDRE();
+        this.nome = alunoInsertDTO.getNome();
+        this.emailInst = alunoInsertDTO.getEmail_Inst();
+        this.senha = alunoInsertDTO.getSenha();
         this.curso=curso;
     }
 }

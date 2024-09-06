@@ -1,10 +1,10 @@
 package br.com.aval_doc.Controllers;
 
-import br.com.aval_doc.DTOs.AlunoDTO;
+import br.com.aval_doc.DTOs.AlunoDetailsDTO;
+import br.com.aval_doc.DTOs.AlunoInsertDTO;
 import br.com.aval_doc.Entities.Aluno;
-import br.com.aval_doc.Entities.Curso;
-import br.com.aval_doc.Repositories.AlunoRepository;
-import br.com.aval_doc.Repositories.CursoRepository;
+import br.com.aval_doc.Services.AlunoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,40 +12,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/alunos")
 public class Alunocontroller {
-    AlunoRepository alunoRepository;
-    CursoRepository cursoRepository;
-    public Alunocontroller(AlunoRepository alunoRepository, CursoRepository cursoRepository) {
-        this.alunoRepository = alunoRepository;
-        this.cursoRepository= cursoRepository;
+    AlunoService alunoService;
+    public Alunocontroller(AlunoService alunoService) {
+        this.alunoService = alunoService;
     }
     @GetMapping
-    public List<Aluno> listaAlunos(){return alunoRepository.findAll();}
+    public ResponseEntity<List<AlunoDetailsDTO>> listAllAlunos(){
+        return ResponseEntity.ok(alunoService.fetchAll());}
 
     @GetMapping("/{id}")
-    public Aluno fetchAluno(@PathVariable int id){
-        if(alunoRepository.existsById(id)){
-            return alunoRepository.findById(id);
-        }else{
-            throw new IllegalArgumentException("Id inválido");
-        }
-
+    public ResponseEntity<AlunoDetailsDTO> fetchAlunoById(@PathVariable int id){
+       return ResponseEntity.ok(alunoService.fetchById(id));
     }
     @PostMapping()
-    public Aluno insertAluno(@RequestBody AlunoDTO alunoDTO){
-        return alunoRepository.save(new Aluno(alunoDTO,
-                cursoRepository.findCursoById(alunoDTO.getFk_curso())));
+    public ResponseEntity<AlunoDetailsDTO> insertAluno(@RequestBody AlunoInsertDTO alunoInsertDTO){
+        return ResponseEntity.ok(alunoService.create(alunoInsertDTO));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAluno(@PathVariable int id){
-        if(alunoRepository.existsById(id)){
-            alunoRepository.deleteById(id);
-        }else{
-            throw new IllegalArgumentException("Id inválido");
-        }
-
-    }
-
-
+    public void deleteAluno(@PathVariable int id){alunoService.deleteById(id);}
 
 }
