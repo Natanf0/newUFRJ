@@ -11,9 +11,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+
 public class Curso {
     @Id @Getter
     private int id;
+    @Getter
     private String nome;
     @ManyToOne
     @JoinColumn(name = "FK_IntEscFacul")

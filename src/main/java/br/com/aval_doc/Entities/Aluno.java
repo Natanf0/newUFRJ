@@ -10,13 +10,13 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class Aluno {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @Getter @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Getter
     private String DRE, nome, emailInst, senha;
 
     @ManyToOne
-    @JoinColumn(name = "fk_curso") @Getter @Setter
+    @JoinColumn(name = "fk_curso") @Getter
     private Curso curso;
 
     public Aluno(AlunoInsertDTO alunoInsertDTO, Curso curso) {

@@ -2,7 +2,6 @@ package br.com.aval_doc.Controllers;
 
 import br.com.aval_doc.DTOs.AlunoDetailsDTO;
 import br.com.aval_doc.DTOs.AlunoInsertDTO;
-import br.com.aval_doc.Entities.Aluno;
 import br.com.aval_doc.Services.AlunoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/alunos")
-public class Alunocontroller {
+@RequestMapping("ufrj_api/aluno")
+public class AlunoController {
     AlunoService alunoService;
-    public Alunocontroller(AlunoService alunoService) {
+    public AlunoController(AlunoService alunoService) {
         this.alunoService = alunoService;
     }
     @GetMapping

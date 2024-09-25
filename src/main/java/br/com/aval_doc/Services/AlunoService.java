@@ -36,6 +36,7 @@ public class AlunoService {
     }
 
     public List<AlunoDetailsDTO> fetchAll(int page, int size){
+        // FALTA TESTAR PAGINAÇÃO
         Pageable pageable = PageRequest.of(page, size);
         return alunoRepository.findAll(pageable).stream()
                 .map(AlunoDetailsDTO::createDTO)
