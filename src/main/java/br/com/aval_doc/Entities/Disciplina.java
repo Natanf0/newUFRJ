@@ -3,7 +3,6 @@ package br.com.aval_doc.Entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Disciplina{
     @Id @Getter
-    private String Codigo;
+    private String codigo;
     @Getter
-    private String Nome;
+    private String nome;
 }

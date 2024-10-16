@@ -9,6 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
 
-    @Query("FROM Avaliacao A WHERE A.aluno=:fk_aluno AND A.professor=:fk_professor AND A.disciplina=:fk_disciplina")
-    boolean validaAvaliacaoDuplicada(int fk_aluno, int fk_professor,String fk_disciplina);
+    @Query("FROM Avaliacao A  WHERE A.aluno.id=:fk_aluno AND A.professor.id=:fk_professor " +
+            "AND A.disciplina.codigo=:fk_disciplina AND DATEDIFF(CURRENT DATE ,A.dataAvaliacao)<90 SELECT COUNT(*)")
+    int validaAvaliacaoDuplicada(Long fk_aluno, int fk_professor,String fk_disciplina);
+
+    Avaliacao findAvaliacaoById(Long id);
+
 }

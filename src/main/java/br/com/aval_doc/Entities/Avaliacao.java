@@ -7,6 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -29,6 +36,8 @@ public class Avaliacao {
     @ManyToOne @JoinColumn(name = "fk_disciplina")
     Disciplina disciplina;
 
+    private LocalDate dataAvaliacao;
+
     public Avaliacao(AvaliacaoDTO avaliacaoDTO, Aluno aluno, Professor professor, Disciplina disciplina) {
         this.descricao = avaliacaoDTO.getDescricao();
         this.didatica = avaliacaoDTO.getDidatica();
@@ -38,6 +47,7 @@ public class Avaliacao {
         this.aluno = aluno;
         this.professor = professor;
         this.disciplina = disciplina;
+        this.dataAvaliacao= LocalDate.parse(LocalDate.now().toString().replace("-","/"),DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 
 }

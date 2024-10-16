@@ -3,6 +3,7 @@ package br.com.aval_doc.Controllers;
 import br.com.aval_doc.DTOs.AlunoDetailsDTO;
 import br.com.aval_doc.DTOs.AlunoInsertDTO;
 import br.com.aval_doc.Services.AlunoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class AlunoController {
         return ResponseEntity.ok(alunoService.fetchAll(page, size));}
 
     @GetMapping("/{id}")
-    public ResponseEntity<AlunoDetailsDTO> fetchAlunoById(@PathVariable int id){
+    public ResponseEntity<AlunoDetailsDTO> fetchAlunoById(@PathVariable Long id){
        return ResponseEntity.ok(alunoService.fetchById(id));
     }
     @PostMapping()
@@ -30,6 +31,7 @@ public class AlunoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAluno(@PathVariable int id){alunoService.deleteById(id);}
-
+    public void deleteAluno(@PathVariable int id) {
+        alunoService.deleteById(id);
+    }
 }

@@ -27,10 +27,9 @@ public class AlunoService {
         this.cursoRepository = cursoRepository;
     }
 
-    public AlunoDetailsDTO fetchById(int id){
-        if(alunoRepository.existsById(id)){
-            Aluno aluno = alunoRepository.findById(id);
-            aluno.setCurso(cursoRepository.findCursoById(aluno.getCurso().getId()));
+    public AlunoDetailsDTO fetchById(Long id){
+        if(alunoRepository.existsAlunoById(id)){
+            Aluno aluno = alunoRepository.fetchAlunoByID(id);
             return AlunoDetailsDTO.createDTO(aluno);}
         else{throw new NotFoundException(entityNameForException);}
     }
@@ -59,5 +58,6 @@ public class AlunoService {
         if(alunoRepository.existsById(id)){
             alunoRepository.deleteById(id);
         }else{throw new NotFoundException(entityNameForException);}
+
     }
 }
