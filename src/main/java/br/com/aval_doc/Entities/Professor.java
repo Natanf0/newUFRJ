@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class Professor {
     @Id @Getter
     private int id;
+    @Getter
     private String nome, email, URL_website;
     @ManyToOne
     private InstitutoEscolaFaculdade institutoEscolaFaculdade;

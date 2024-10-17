@@ -8,5 +8,5 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina, String> 
     @Query("from Disciplina d where d.codigo=:codigo")
     Disciplina findByCodigo(String codigo);
     @Query("from Disciplina d where d.codigo=:codigo")
-    boolean existsByCodigo(String codigo);
+    Disciplina existsByCodigo(String codigo);
 }
