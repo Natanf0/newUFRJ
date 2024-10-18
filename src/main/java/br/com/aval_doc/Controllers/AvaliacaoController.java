@@ -7,6 +7,8 @@ import br.com.aval_doc.Services.AvaliacaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("ufrj_api/avaliacao")
 public class AvaliacaoController {
@@ -26,5 +28,18 @@ public class AvaliacaoController {
         return avaliacaoService.update(id, avaliacaoUpdateDTO);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<AvaliacaoDetailsDTO> deleteAvaliacao(@PathVariable Long id) {
+        return avaliacaoService.delete(id);
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AvaliacaoDetailsDTO> getAvaliacao(@PathVariable Long id) {
+        return avaliacaoService.getById(id);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AvaliacaoDetailsDTO>> getAllAvaliacao() {
+        return avaliacaoService.getAll();
+    }
 }
