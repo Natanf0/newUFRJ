@@ -1,9 +1,6 @@
 package br.com.aval_doc.Repositories;
 
-import br.com.aval_doc.Entities.Aluno;
 import br.com.aval_doc.Entities.Avaliacao;
-import br.com.aval_doc.Entities.Disciplina;
-import br.com.aval_doc.Entities.Professor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

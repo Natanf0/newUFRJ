@@ -3,6 +3,7 @@ package br.com.aval_doc.Services;
 import br.com.aval_doc.DTOs.AlunoDetailsDTO;
 import br.com.aval_doc.DTOs.AlunoInsertDTO;
 import br.com.aval_doc.Entities.Aluno;
+import br.com.aval_doc.Entities.Curso;
 import br.com.aval_doc.Repositories.AlunoRepository;
 import br.com.aval_doc.Repositories.CursoRepository;
 import br.com.aval_doc.exception.DuplicatePostMethodException;
@@ -10,6 +11,7 @@ import br.com.aval_doc.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,15 +32,15 @@ public class AlunoService {
     public AlunoDetailsDTO fetchById(Long id){
         if(alunoRepository.existsAlunoById(id)){
             Aluno aluno = alunoRepository.fetchAlunoByID(id);
-            return AlunoDetailsDTO.createDTO(aluno);}
+            Curso curso = cursoRepository.findCursoById(aluno.getCurso().getId());
+            return AlunoDetailsDTO.convertAlunoToAlunoDetailsDTO(aluno, curso);}
         else{throw new NotFoundException(entityNameForException);}
     }
 
     public List<AlunoDetailsDTO> fetchAll(int page, int size){
-        // FALTA TESTAR PAGINAÇÃO
         Pageable pageable = PageRequest.of(page, size);
         return alunoRepository.findAll(pageable).stream()
-                .map(AlunoDetailsDTO::createDTO)
+                .map(e->AlunoDetailsDTO.convertAlunoToAlunoDetailsDTO(e, e.getCurso()))
                 .collect(Collectors.toList());
     }
 
@@ -47,17 +49,21 @@ public class AlunoService {
         if(!(alunoRepository.existsAlunoByDRE(alunoInsertDTO.getDRE()))) {
             Aluno aluno = new Aluno(alunoInsertDTO, cursoRepository.findCursoById(alunoInsertDTO.getFk_curso()));
             alunoRepository.save(aluno);
-            return AlunoDetailsDTO.createDTO(aluno);
+            return AlunoDetailsDTO.convertAlunoToAlunoDetailsDTO(aluno, cursoRepository.findCursoById(alunoInsertDTO.getFk_curso()));
         } else {
             throw new DuplicatePostMethodException(entityNameForException);
         }
     }
 
-    @Transactional
-    public void deleteById(int id){
-        if(alunoRepository.existsById(id)){
-            alunoRepository.deleteById(id);
-        }else{throw new NotFoundException(entityNameForException);}
+    public ResponseEntity<AlunoDetailsDTO> deleteById(Long id){
+        validaAlunoExists(id);
+        Aluno aluno = alunoRepository.fetchAlunoByID(id);
+        Curso curso = cursoRepository.findCursoById(aluno.getCurso().getId());
+        alunoRepository.delete(aluno);
+        return ResponseEntity.ok(AlunoDetailsDTO.convertAlunoToAlunoDetailsDTO(aluno,curso));
+    }
 
+    private void validaAlunoExists(Long id){
+        if(!(alunoRepository.existsAlunoById(id))) throw new NotFoundException(entityNameForException);
     }
 }

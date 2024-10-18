@@ -31,7 +31,7 @@ public class AlunoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAluno(@PathVariable int id) {
-        alunoService.deleteById(id);
+    public ResponseEntity<AlunoDetailsDTO> deleteAluno(@PathVariable Long id) {
+        return alunoService.deleteById(id);
     }
 }

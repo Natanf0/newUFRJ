@@ -10,4 +10,7 @@ public interface AlunoRepository extends JpaRepository<Aluno, Integer> {
     Aluno fetchAlunoByID(Long id);
     boolean existsAlunoByDRE(String DRE);
     boolean existsAlunoById(Long id);
+
+    //void deleteById(Long id);
+    //void deleteAlunoById(Long id);
 }

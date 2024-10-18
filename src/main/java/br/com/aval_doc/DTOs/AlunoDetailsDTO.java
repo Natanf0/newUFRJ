@@ -6,13 +6,13 @@ import br.com.aval_doc.Entities.Curso;
 public record AlunoDetailsDTO(String DRE,
                               String nome,
                               String emailInst,
-                              Curso curso){
+                              String cursoNome){
 
-    public static AlunoDetailsDTO createDTO(Aluno aluno) {
+    public static AlunoDetailsDTO convertAlunoToAlunoDetailsDTO(Aluno aluno, Curso curso) {
         return new AlunoDetailsDTO(aluno.getDRE(),
-                aluno.getNome(),aluno.
-                getEmailInst(),
-                aluno.getCurso());
+                aluno.getNome(),
+                aluno.getEmailInst(),
+                curso.getNome());
     }
 }
 
