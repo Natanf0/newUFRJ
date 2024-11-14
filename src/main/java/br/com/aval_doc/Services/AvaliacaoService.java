@@ -39,12 +39,12 @@ public class AvaliacaoService {
         validaDisciplinaExists(avaliacaoCreateDTO.getFk_disciplina());
         validaDuplicatePostMethods(avaliacaoCreateDTO);
 
-        Avaliacao avaliacao = new Avaliacao(avaliacaoCreateDTO, alunoRepository.fetchAlunoByID(avaliacaoCreateDTO.getFk_aluno()),
+        Avaliacao avaliacao = new Avaliacao(avaliacaoCreateDTO, alunoRepository.findById(avaliacaoCreateDTO.getFk_aluno()).get(),
                                             professorRepository.findById(avaliacaoCreateDTO.getFk_professor()), disciplinaRepository.findByCodigo(avaliacaoCreateDTO.getFk_disciplina()));
         avaliacaoRepository.save(avaliacao);
 
         return ResponseEntity.ok(AvaliacaoDetailsDTO.convertAvaliacaoToAvaliacaoDetailsDTO(avaliacao,
-                    alunoRepository.fetchAlunoByID(avaliacaoCreateDTO.getFk_aluno()),
+                    alunoRepository.findById(avaliacaoCreateDTO.getFk_aluno()).get(),
                     professorRepository.findById(avaliacaoCreateDTO.getFk_professor()),
                     disciplinaRepository.findByCodigo(avaliacaoCreateDTO.getFk_disciplina())));
 
@@ -60,7 +60,7 @@ public class AvaliacaoService {
             if(avaliacaoUpdateDTO.getDecoro()>0) avaliacao.setDecoro(avaliacaoUpdateDTO.getDecoro());
             
             return ResponseEntity.ok(AvaliacaoDetailsDTO.convertAvaliacaoToAvaliacaoDetailsDTO(avaliacao,
-                                    alunoRepository.fetchAlunoByID(avaliacao.getAluno().getId()),
+                                    alunoRepository.findById(avaliacao.getAluno().getId()).get(),
                                     professorRepository.findById(avaliacao.getProfessor().getId()),
                                     disciplinaRepository.findByCodigo(avaliacao.getDisciplina().getCodigo())));
         }else {
