@@ -84,14 +84,14 @@ public class AlunoService {
     private void validaEmail(String email){
         if(email.length()>80) throw new IllegalArgumentException("E-mail muito longo!");
         if(!(email.toLowerCase().matches("[a-z]*@ufrj.br") ||
-                email.toLowerCase().matches("[a-z]*.ufrj.br"))){
+                email.toLowerCase().matches("[a-z]*@[a-z]*.ufrj.br"))){ // Não é a validação mais assertiva, mas a mais eficiente no momento
             throw new IllegalArgumentException("Insira um E-mail institucional válido!");
         }
         }
 
     private void validaNome(String nome) {
         if (nome.length() > 80) throw new IllegalArgumentException("Nome muito longo!");
-        if (!(nome.toLowerCase().matches("[Aa-zZ]*")))
+        if (!(nome.toLowerCase().matches("([Aa-zZ] u ' ')*")))
             throw new IllegalArgumentException("Insira um Nome válido!");
         }
 

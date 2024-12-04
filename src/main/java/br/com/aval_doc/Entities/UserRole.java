@@ -1,8 +1,7 @@
 package br.com.aval_doc.Entities;
 public enum UserRole {
-    ALUNO("aluno"),
-    PROFESSOR("professor"),
-    COORDENACAO("coordenacao");
+    ALUNO("ALUNO"),
+    COORDENACAO("COORDENACAO");
 
     private String role;
 

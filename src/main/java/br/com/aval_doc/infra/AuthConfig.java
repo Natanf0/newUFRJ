@@ -26,6 +26,7 @@ public class AuthConfig {
     }
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        System.out.println(UserRole.ALUNO.getValue());
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -34,17 +35,18 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.POST, "/ufrj_api/aluno").permitAll()
                         .requestMatchers(HttpMethod.GET, "/ufrj_api/avaliacao").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/ufrj_api/aluno").hasRole("COORDENACAO")
-                        .requestMatchers(HttpMethod.GET, "/ufrj_api/aluno/{id}").hasRole(UserRole.COORDENACAO.getValue())
-                        .requestMatchers(HttpMethod.DELETE, "/ufrj_api/aluno/{id}").hasRole(UserRole.COORDENACAO.getValue())
+                        .requestMatchers(HttpMethod.GET, "/ufrj_api/aluno").hasAuthority(UserRole.COORDENACAO.getValue())
+                        .requestMatchers(HttpMethod.GET, "/ufrj_api/aluno/{id}").hasAuthority(UserRole.ALUNO.getValue())
+                        .requestMatchers(HttpMethod.DELETE, "/ufrj_api/aluno/{id}").hasAuthority(UserRole.COORDENACAO.getValue())
 
-                        .requestMatchers(HttpMethod.POST, "/ufrj_api/avaliacao").hasRole(UserRole.ALUNO.getValue())
-                        .requestMatchers(HttpMethod.PATCH, "/ufrj_api/avaliacao/{id}").hasRole(UserRole.ALUNO.getValue())
-                        .requestMatchers(HttpMethod.DELETE, "/ufrj_api/avaliacao/{id}").hasRole(UserRole.ALUNO.getValue())
-                        .requestMatchers(HttpMethod.GET, "/ufrj_api/avaliacao/{id}").hasRole(UserRole.ALUNO.getValue())
+                        .requestMatchers(HttpMethod.POST, "/ufrj_api/avaliacao").hasAuthority(UserRole.ALUNO.getValue())
+                        .requestMatchers(HttpMethod.PATCH, "/ufrj_api/avaliacao/{id}").hasAuthority(UserRole.ALUNO.getValue())
+                        .requestMatchers(HttpMethod.DELETE, "/ufrj_api/avaliacao/{id}").hasAuthority(UserRole.ALUNO.getValue())
+                        .requestMatchers(HttpMethod.GET, "/ufrj_api/avaliacao/{id}").hasAuthority(UserRole.ALUNO.getValue())
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+
     }
 
     @Bean

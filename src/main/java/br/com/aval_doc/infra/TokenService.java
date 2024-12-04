@@ -1,6 +1,7 @@
 package br.com.aval_doc.infra;
 
 import br.com.aval_doc.Entities.Aluno;
+import br.com.aval_doc.Entities.UserRole;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -22,7 +23,9 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("aval_doc")
                     .withSubject(aluno.getDRE())
+                    .withIssuedAt(Instant.now())
                     .withExpiresAt(genAccessExpirationDate())
+                    .withClaim("role", aluno.getRole().toString())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
             throw new JWTCreationException("Error while generating token", exception);

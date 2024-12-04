@@ -4,7 +4,6 @@ import br.com.aval_doc.DTOs.AvaliacaoCreateDTO;
 import br.com.aval_doc.DTOs.AvaliacaoDetailsDTO;
 import br.com.aval_doc.DTOs.AvaliacaoUpdateDTO;
 import br.com.aval_doc.Services.AvaliacaoService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +19,12 @@ public class AvaliacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<AvaliacaoDetailsDTO> createAvaliacao(@RequestBody @Valid AvaliacaoCreateDTO avaliacaoCreateDTO) {
+    public ResponseEntity<AvaliacaoDetailsDTO> createAvaliacao(@RequestBody AvaliacaoCreateDTO avaliacaoCreateDTO) {
         return avaliacaoService.create(avaliacaoCreateDTO);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AvaliacaoDetailsDTO> updateAvaliacao(@PathVariable Long id, @RequestBody @Valid AvaliacaoUpdateDTO avaliacaoUpdateDTO) throws IllegalAccessException {
+    public ResponseEntity<AvaliacaoDetailsDTO> updateAvaliacao(@PathVariable Long id, @RequestBody AvaliacaoUpdateDTO avaliacaoUpdateDTO) throws IllegalAccessException {
         return avaliacaoService.update(id, avaliacaoUpdateDTO);
     }
 

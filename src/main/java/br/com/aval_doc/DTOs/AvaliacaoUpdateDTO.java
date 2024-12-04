@@ -1,11 +1,6 @@
 package br.com.aval_doc.DTOs;
-
-import br.com.aval_doc.Entities.Avaliacao;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
-
-import java.time.LocalDate;
-import java.util.Optional;
 
 public record AvaliacaoUpdateDTO(
         @NotBlank @Getter String descricao,
@@ -19,4 +14,6 @@ public record AvaliacaoUpdateDTO(
         short decoro
 ) {
 
+
 }
+
