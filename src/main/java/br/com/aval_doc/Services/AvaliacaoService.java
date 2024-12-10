@@ -10,6 +10,7 @@ import br.com.aval_doc.Repositories.DisciplinaRepository;
 import br.com.aval_doc.Repositories.ProfessorRepository;
 import br.com.aval_doc.exception.DuplicatePostMethodException;
 import br.com.aval_doc.exception.NotFoundException;
+import br.com.aval_doc.exception.Validations;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AvaliacaoService {
+public class AvaliacaoService implements Validations {
     private AvaliacaoRepository avaliacaoRepository;
     private AlunoRepository alunoRepository;
     private ProfessorRepository professorRepository;
@@ -34,10 +35,16 @@ public class AvaliacaoService {
 
     @Transactional
     public ResponseEntity<AvaliacaoDetailsDTO> create(AvaliacaoCreateDTO avaliacaoCreateDTO){
+        // Validações:
         validaAlunoExists(avaliacaoCreateDTO.getFk_aluno());
         validaProfessorExists(avaliacaoCreateDTO.getFk_professor());
         validaDisciplinaExists(avaliacaoCreateDTO.getFk_disciplina());
         validaDuplicatePostMethods(avaliacaoCreateDTO);
+        validaDescricao(avaliacaoCreateDTO.getDescricao());
+        validaMetricasAvaliacao(avaliacaoCreateDTO.getDidatica(), "Didática");
+        validaMetricasAvaliacao(avaliacaoCreateDTO.getAtrasos(), "Atrasos");
+        validaMetricasAvaliacao(avaliacaoCreateDTO.getMetodoAvaliacao(), "Método de Avaliação");
+        validaMetricasAvaliacao(avaliacaoCreateDTO.getDecoro(), "Decoro");
 
         Avaliacao avaliacao = new Avaliacao(avaliacaoCreateDTO, alunoRepository.findById(avaliacaoCreateDTO.getFk_aluno()).get(),
                                             professorRepository.findById(avaliacaoCreateDTO.getFk_professor()), disciplinaRepository.findByCodigo(avaliacaoCreateDTO.getFk_disciplina()));
@@ -53,11 +60,26 @@ public class AvaliacaoService {
     public ResponseEntity<AvaliacaoDetailsDTO> update(Long id, AvaliacaoUpdateDTO avaliacaoUpdateDTO) {
         Avaliacao avaliacao = avaliacaoRepository.findAvaliacaoById(id);
         if (avaliacao!=null) {
-            if(avaliacaoUpdateDTO.getDescricao()!=null) avaliacao.setDescricao(avaliacaoUpdateDTO.getDescricao());
-            if(avaliacaoUpdateDTO.getDidatica()>0) avaliacao.setDidatica(avaliacaoUpdateDTO.getDidatica());
-            if(avaliacaoUpdateDTO.getAtrasos()>0) avaliacao.setAtrasos(avaliacaoUpdateDTO.getAtrasos());
-            if(avaliacaoUpdateDTO.getMetodoAvaliacao()>0) avaliacao.setMetodoAvaliacao(avaliacaoUpdateDTO.getMetodoAvaliacao());
-            if(avaliacaoUpdateDTO.getDecoro()>0) avaliacao.setDecoro(avaliacaoUpdateDTO.getDecoro());
+            if(avaliacaoUpdateDTO.getDescricao().isPresent()){
+                validaDescricao(avaliacaoUpdateDTO.getDescricao().get());
+                avaliacao.setDescricao(avaliacaoUpdateDTO.getDescricao().get());
+            }
+            if(avaliacaoUpdateDTO.getDidatica().isPresent()){
+                validaMetricasAvaliacao(avaliacaoUpdateDTO.getDidatica().get(), "Didática");
+                avaliacao.setDidatica(avaliacaoUpdateDTO.getDidatica().get());
+            }
+            if(avaliacaoUpdateDTO.getAtrasos().isPresent()){
+                validaMetricasAvaliacao(avaliacaoUpdateDTO.getAtrasos().get(), "Atrasos");
+                avaliacao.setAtrasos(avaliacaoUpdateDTO.getAtrasos().get());
+            }
+            if(avaliacaoUpdateDTO.getMetodoAvaliacao().isPresent()){
+                validaMetricasAvaliacao(avaliacaoUpdateDTO.getMetodoAvaliacao().get(), "Método de Avaliação");
+                avaliacao.setMetodoAvaliacao(avaliacaoUpdateDTO.getMetodoAvaliacao().get());
+            }
+            if(avaliacaoUpdateDTO.getDecoro().isPresent()){
+                validaMetricasAvaliacao(avaliacaoUpdateDTO.getDecoro().get(), "Decoro");
+                avaliacao.setDecoro(avaliacaoUpdateDTO.getDecoro().get());
+            }
             
             return ResponseEntity.ok(AvaliacaoDetailsDTO.convertAvaliacaoToAvaliacaoDetailsDTO(avaliacao,
                                     alunoRepository.findById(avaliacao.getAluno().getId()).get(),

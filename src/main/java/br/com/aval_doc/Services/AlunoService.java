@@ -8,6 +8,7 @@ import br.com.aval_doc.Repositories.AlunoRepository;
 import br.com.aval_doc.Repositories.CursoRepository;
 import br.com.aval_doc.exception.DuplicatePostMethodException;
 import br.com.aval_doc.exception.NotFoundException;
+import br.com.aval_doc.exception.Validations;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class AlunoService {
+public class AlunoService implements Validations {
     private AlunoRepository alunoRepository;
     private CursoRepository cursoRepository;
 
@@ -54,7 +55,6 @@ public class AlunoService {
             validaDRE(alunoInsertDTO.getDRE());
             validaNome(alunoInsertDTO.getNome());
             validaEmail(alunoInsertDTO.Email_Inst());
-            validaSenha(alunoInsertDTO.getSenha());
 
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             Aluno aluno = new Aluno(alunoInsertDTO, cursoRepository.findCursoById(alunoInsertDTO.getFk_curso()));
@@ -76,32 +76,6 @@ public class AlunoService {
 
     private void validaAlunoExists(Long id){
         if(!(alunoRepository.existsAlunoById(id))) throw new NotFoundException(entityNameForException);
-    }
-
-    private void validaDRE(String dre){
-        if(!(dre.matches("[1-9][0-9]{8}"))) throw new IllegalArgumentException("Insira um DRE válido!");
-    }
-    private void validaEmail(String email){
-        if(email.length()>80) throw new IllegalArgumentException("E-mail muito longo!");
-        if(!(email.toLowerCase().matches("[a-z]*@ufrj.br") ||
-                email.toLowerCase().matches("[a-z]*@[a-z]*.ufrj.br"))){ // Não é a validação mais assertiva, mas a mais eficiente no momento
-            throw new IllegalArgumentException("Insira um E-mail institucional válido!");
-        }
-        }
-
-    private void validaNome(String nome) {
-        if (nome.length() > 80) throw new IllegalArgumentException("Nome muito longo!");
-        if (!(nome.toLowerCase().matches("([Aa-zZ] u ' ')*")))
-            throw new IllegalArgumentException("Insira um Nome válido!");
-        }
-
-    private void validaSenha(String senha){
-        if (senha.length() > 255) throw new IllegalArgumentException("Senha muito longa!");
-        if (!(senha.toLowerCase().matches("[Aa-zZ]*")))
-            throw new IllegalArgumentException("Insira uma senha válida!"+
-                                               "Critérios: Pelo menos 10 caracteres"+
-                                               "");
-
     }
 
 }

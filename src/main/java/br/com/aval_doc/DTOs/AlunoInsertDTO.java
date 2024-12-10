@@ -7,6 +7,6 @@ import lombok.Getter;
 public record AlunoInsertDTO(@NotBlank(message = "Informe o DRE") @Getter String DRE,
                              @NotBlank(message = "Informe o Nome") @Getter String Nome,
                              @NotBlank(message = "Informe o E-mail Institucional") @Getter String Email_Inst,
-                             @NotBlank(message = "Informe a senha") @Getter String Senha,
+                             @NotBlank(message = "Informe a senha") @Size(min=8, message = "Senha com menos de 8 caracteres" ) @Getter String Senha,
                              @Getter int fk_curso) {
 }

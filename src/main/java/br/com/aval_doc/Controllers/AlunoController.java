@@ -3,12 +3,17 @@ package br.com.aval_doc.Controllers;
 import br.com.aval_doc.DTOs.AlunoDetailsDTO;
 import br.com.aval_doc.DTOs.AlunoInsertDTO;
 import br.com.aval_doc.Services.AlunoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("ufrj_api/aluno")
@@ -36,4 +41,5 @@ public class AlunoController {
     public ResponseEntity<AlunoDetailsDTO> deleteAluno(@PathVariable Long id) {
         return alunoService.deleteById(id);
     }
+
 }

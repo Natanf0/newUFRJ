@@ -5,6 +5,7 @@ import br.com.aval_doc.DTOs.LoginDTO;
 import br.com.aval_doc.Entities.Aluno;
 import br.com.aval_doc.Services.AuthService;
 import br.com.aval_doc.infra.TokenService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
